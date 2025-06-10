@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Smart Patch Processor v2.0 - Script Exécutable"""
+# Smart Patch Processor v2.0 - Script Exécutable
 
 import sys
 import os
@@ -17,7 +17,7 @@ def main():
         # 4. Installation pip système
         Path("/usr/local/lib/python3.*/site-packages/smart-patch-processor"),
     ]
-    
+
     # Rechercher le répertoire contenant main.py
     script_dir = None
     for path in possible_paths:
@@ -33,10 +33,10 @@ def main():
             if (path / "main.py").exists():
                 script_dir = path
                 break
-        
+
         if script_dir:
             break
-    
+
     if not script_dir:
         print("❌ Erreur: Impossible de localiser les modules Smart Patch Processor")
         print("Chemins vérifiés:")
@@ -47,11 +47,11 @@ def main():
         print("  2. Installer via pip: pip3 install ./")
         print("  3. Exécuter depuis le répertoire source: python3 main.py")
         sys.exit(1)
-    
+
     # Ajouter au Python path
     if str(script_dir) not in sys.path:
         sys.path.insert(0, str(script_dir))
-    
+
     try:
         from main import main as smart_patch_main
         smart_patch_main()

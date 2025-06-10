@@ -25,11 +25,11 @@ except ImportError:
 
 class SmartPatchHelp:
     """Système d'aide avancé pour Smart Patch Processor"""
-    
+
     def __init__(self, version="2.0"):
         self.version = version
         self.examples_dir = Path.cwd() / "examples"
-        
+
     def show_main_help(self):
         """Affiche l'aide principale complète"""
         self._print_header()
@@ -39,19 +39,19 @@ class SmartPatchHelp:
         self._print_examples()
         self._print_troubleshooting()
         self._print_footer()
-    
+
     def show_guided_help(self):
         """Aide spécifique au mode guidé"""
         self._print_section_header("🎯 MODE GUIDÉ - AIDE DÉTAILLÉE")
-        
+
         print(f"{Colors.BLUE}📚 Le mode guidé est recommandé pour tous les utilisateurs.{Colors.END}")
         print("Il vous accompagne étape par étape avec des vérifications de sécurité.")
         print()
-        
+
         print(f"{Colors.CYAN}{Colors.BOLD}USAGE DU MODE GUIDÉ:{Colors.END}")
         print(f"   {Colors.GREEN}smart-patch --guided [OPTIONS] SOURCE DESTINATION{Colors.END}")
         print()
-        
+
         print(f"{Colors.YELLOW}OPTIONS SPÉCIFIQUES AU MODE GUIDÉ:{Colors.END}")
         options = [
             ("--backup-dir DIR", "Répertoire personnalisé pour les sauvegardes", "~/backups"),
@@ -60,25 +60,25 @@ class SmartPatchHelp:
             ("--interactive", "Mode interactif avec confirmations", "Recommandé"),
             ("--batch-mode", "Traitement par lots sans interruption", "Avancé"),
         ]
-        
+
         for option, desc, note in options:
             print(f"   {Colors.CYAN}{option:20}{Colors.END} {desc}")
             print(f"      {Colors.PURPLE}💡 {note}{Colors.END}")
-        
+
         print(f"\n{Colors.BOLD}🔄 PROCESSUS ÉTAPE PAR ÉTAPE:{Colors.END}")
         steps = [
             "🔍 Analyse et détection des patches",
-            "🎯 Identification des fichiers cibles", 
+            "🎯 Identification des fichiers cibles",
             "🛡️ Vérifications de sécurité",
             "👁️ Aperçu des modifications (optionnel)",
             "💾 Création des sauvegardes",
             "⚡ Application des patches",
             "📊 Rapport de résultats"
         ]
-        
+
         for i, step in enumerate(steps, 1):
             print(f"   {i}. {step}")
-        
+
         print(f"\n{Colors.GREEN}✨ EXEMPLES PRATIQUES:{Colors.END}")
         examples = [
             ("Débutant complet", "smart-patch --guided patches/ output/", "Traitement sécurisé de base"),
@@ -86,38 +86,38 @@ class SmartPatchHelp:
             ("Preview seulement", "smart-patch --guided --preview-only patches/ /tmp/", "Voir sans appliquer"),
             ("Modification directe", "smart-patch --guided --modify-original patches/ ./", "Modifie les originaux")
         ]
-        
+
         for title, cmd, desc in examples:
             print(f"\n   {Colors.BOLD}{title}:{Colors.END}")
             print(f"   {Colors.GREEN}$ {cmd}{Colors.END}")
             print(f"   💡 {desc}")
-    
+
     def show_wizard_help(self):
         """Aide pour le mode assistant"""
         self._print_section_header("🧙‍♂️ MODE ASSISTANT - AIDE DÉTAILLÉE")
-        
+
         print(f"{Colors.BLUE}📚 L'assistant vous guide pas-à-pas si vous débutez avec les patches.{Colors.END}")
         print("Il analyse votre situation et recommande la meilleure configuration.")
         print()
-        
+
         print(f"{Colors.CYAN}{Colors.BOLD}LANCEMENT DE L'ASSISTANT:{Colors.END}")
         print(f"   {Colors.GREEN}smart-patch --wizard{Colors.END}")
         print()
-        
+
         print(f"{Colors.YELLOW}🎯 QUE FAIT L'ASSISTANT ?{Colors.END}")
         features = [
             "🔍 Détecte automatiquement vos patches",
-            "❓ Analyse votre niveau d'expérience", 
+            "❓ Analyse votre niveau d'expérience",
             "🎯 Identifie le type de votre projet",
             "🛡️ Configure la sécurité adaptée",
             "⚙️ Propose des fonctionnalités avancées",
             "📋 Génère un plan d'exécution détaillé",
             "✅ Lance le traitement avec votre validation"
         ]
-        
+
         for feature in features:
             print(f"   {feature}")
-        
+
         print(f"\n{Colors.BOLD}📊 PROFILS UTILISATEUR SUPPORTÉS:{Colors.END}")
         profiles = [
             ("👶 Débutant complet", "Jamais utilisé de patches", "Sécurité maximum + explications"),
@@ -125,19 +125,19 @@ class SmartPatchHelp:
             ("🚀 Intermédiaire", "À l'aise avec les concepts", "Fonctionnalités avancées"),
             ("🎯 Expert", "Juste besoin d'un outil efficace", "Personnalisation complète")
         ]
-        
+
         for level, exp, config in profiles:
             print(f"\n   {Colors.CYAN}{level}{Colors.END}")
             print(f"      Expérience: {exp}")
             print(f"      Configuration: {config}")
-    
+
     def show_examples_help(self):
         """Exemples détaillés d'utilisation"""
         self._print_section_header("📚 EXEMPLES DÉTAILLÉS D'UTILISATION")
-        
+
         print(f"{Colors.BLUE}Voici des exemples concrets pour différentes situations.{Colors.END}")
         print()
-        
+
         scenarios = [
             {
                 "title": "🔰 DÉBUTANT - Premier patch",
@@ -149,7 +149,7 @@ class SmartPatchHelp:
                 "tips": ["Gardez une sauvegarde de vos fichiers", "Utilisez toujours --guided au début"]
             },
             {
-                "title": "👨‍💻 DÉVELOPPEUR - Patch d'équipe", 
+                "title": "👨‍💻 DÉVELOPPEUR - Patch d'équipe",
                 "situation": "Un collègue vous a envoyé un patch pour corriger un bug",
                 "commands": [
                     ("smart-patch --guided --backup-dir ~/backups colleague.patch src/", "Avec backup personnalisé"),
@@ -188,36 +188,36 @@ class SmartPatchHelp:
                 "tips": ["Mode expert pour contrôle maximum", "Vérification manuelle recommandée"]
             }
         ]
-        
+
         for scenario in scenarios:
             print(f"{Colors.BOLD}{scenario['title']}{Colors.END}")
             print(f"📝 Situation: {scenario['situation']}")
             print()
-            
+
             print(f"{Colors.GREEN}Commandes recommandées:{Colors.END}")
             for cmd, desc in scenario['commands']:
                 print(f"   {Colors.CYAN}$ {cmd}{Colors.END}")
                 print(f"     💡 {desc}")
-            
+
             print(f"\n{Colors.YELLOW}💡 Conseils:{Colors.END}")
             for tip in scenario['tips']:
                 print(f"   • {tip}")
             print()
-    
+
     def show_config_help(self):
         """Aide sur la configuration"""
         self._print_section_header("⚙️ SYSTÈME DE CONFIGURATION")
-        
+
         print(f"{Colors.BLUE}Smart Patch Processor utilise un système de configuration flexible.{Colors.END}")
         print()
-        
+
         print(f"{Colors.CYAN}{Colors.BOLD}CRÉATION D'UNE CONFIGURATION:{Colors.END}")
         print(f"   {Colors.GREEN}smart-patch --create-config{Colors.END}")
         print("   💡 Lance un assistant pour créer une configuration personnalisée")
         print()
-        
+
         print(f"{Colors.YELLOW}SECTIONS DE CONFIGURATION PRINCIPALES:{Colors.END}")
-        
+
         sections = [
             {
                 "name": "detection",
@@ -229,7 +229,7 @@ class SmartPatchHelp:
                 ]
             },
             {
-                "name": "security", 
+                "name": "security",
                 "desc": "Paramètres de sécurité",
                 "options": [
                     ("scan_dangerous_patterns", "Scan des patterns dangereux", "true"),
@@ -239,7 +239,7 @@ class SmartPatchHelp:
             },
             {
                 "name": "guided_patching",
-                "desc": "Configuration du mode guidé", 
+                "desc": "Configuration du mode guidé",
                 "options": [
                     ("enabled", "Mode guidé activé", "true"),
                     ("preview_enabled", "Aperçus activés", "true"),
@@ -247,33 +247,33 @@ class SmartPatchHelp:
                 ]
             }
         ]
-        
+
         for section in sections:
             print(f"\n{Colors.BOLD}📁 {section['name'].upper()}{Colors.END}")
             print(f"   {section['desc']}")
             for option, desc, default in section['options']:
                 print(f"   • {Colors.CYAN}{option}{Colors.END}: {desc} (défaut: {Colors.YELLOW}{default}{Colors.END})")
-        
+
         print(f"\n{Colors.GREEN}PROFILS PRÉDÉFINIS:{Colors.END}")
         profiles = [
             ("🔰 Débutant", "Sécurité max + mode guidé + confirmations"),
             ("👨‍💻 Développeur", "Équilibre performance/sécurité + AST"),
             ("🏭 Production", "Robuste + logging + rollback")
         ]
-        
+
         for profile, desc in profiles:
             print(f"   {profile}: {desc}")
-        
+
         print(f"\n{Colors.CYAN}UTILISATION D'UNE CONFIGURATION:{Colors.END}")
         print(f"   {Colors.GREEN}smart-patch --config ma_config.json patches/ output/{Colors.END}")
-    
+
     def show_troubleshooting_help(self):
         """Guide de dépannage détaillé"""
         self._print_section_header("🔧 GUIDE DE DÉPANNAGE")
-        
+
         print(f"{Colors.BLUE}Solutions aux problèmes les plus courants.{Colors.END}")
         print()
-        
+
         problems = [
             {
                 "title": "❌ 'Fichier cible non détecté'",
@@ -305,7 +305,7 @@ class SmartPatchHelp:
                 "title": "❌ 'Permission denied'",
                 "causes": [
                     "Fichiers en lecture seule",
-                    "Répertoire de destination protégé", 
+                    "Répertoire de destination protégé",
                     "Permissions insuffisantes"
                 ],
                 "solutions": [
@@ -341,33 +341,33 @@ class SmartPatchHelp:
                 ]
             }
         ]
-        
+
         for problem in problems:
             print(f"{Colors.BOLD}{problem['title']}{Colors.END}")
-            
+
             print(f"\n{Colors.YELLOW}Causes possibles:{Colors.END}")
             for cause in problem['causes']:
                 print(f"   • {cause}")
-            
+
             print(f"\n{Colors.GREEN}Solutions:{Colors.END}")
             for solution, cmd in problem['solutions']:
                 print(f"   🔧 {solution}:")
                 print(f"      {Colors.CYAN}{cmd}{Colors.END}")
             print()
-        
+
         print(f"{Colors.PURPLE}🆘 AIDE SUPPLÉMENTAIRE:{Colors.END}")
         print("   • Tests: smart-patch --test")
         print("   • Diagnostic: smart-patch --wizard")
         print("   • Mode verbose: --verbose pour plus de détails")
         print("   • Logs: Fichiers de log générés automatiquement")
-    
+
     def show_advanced_help(self):
         """Aide sur les fonctionnalités avancées"""
         self._print_section_header("🚀 FONCTIONNALITÉS AVANCÉES")
-        
+
         print(f"{Colors.BLUE}Fonctionnalités pour utilisateurs expérimentés.{Colors.END}")
         print()
-        
+
         features = [
             {
                 "title": "🧠 Analyse AST (Abstract Syntax Tree)",
@@ -406,14 +406,14 @@ class SmartPatchHelp:
                 "config": "batch.max_concurrent_patches: 4"
             }
         ]
-        
+
         for feature in features:
             print(f"{Colors.BOLD}{feature['title']}{Colors.END}")
             print(f"   📝 {feature['desc']}")
             print(f"   🔧 Usage: {Colors.CYAN}{feature['usage']}{Colors.END}")
             print(f"   ⚙️ Config: {Colors.YELLOW}{feature['config']}{Colors.END}")
             print()
-        
+
         print(f"{Colors.PURPLE}💡 CONSEILS D'EXPERT:{Colors.END}")
         tips = [
             "Utilisez --verbose pour comprendre le traitement interne",
@@ -422,16 +422,16 @@ class SmartPatchHelp:
             "Utilisez le mode interactif pour les cas complexes",
             "Activez le rollback pour expérimenter en sécurité"
         ]
-        
+
         for tip in tips:
             print(f"   💡 {tip}")
-    
+
     def show_quick_reference(self):
         """Référence rapide"""
         self._print_section_header("⚡ RÉFÉRENCE RAPIDE")
-        
+
         print(f"{Colors.CYAN}COMMANDES ESSENTIELLES:{Colors.END}")
-        
+
         quick_commands = [
             ("smart-patch --wizard", "🧙‍♂️ Assistant débutant"),
             ("smart-patch --guided patches/ output/", "🎯 Mode guidé standard"),
@@ -441,12 +441,12 @@ class SmartPatchHelp:
             ("smart-patch --test", "🧪 Tests système"),
             ("smart-patch --version", "ℹ️ Version du logiciel")
         ]
-        
+
         for cmd, desc in quick_commands:
             print(f"   {Colors.GREEN}{cmd:50}{Colors.END} {desc}")
-        
+
         print(f"\n{Colors.YELLOW}OPTIONS IMPORTANTES:{Colors.END}")
-        
+
         important_options = [
             ("--guided", "Mode guidé recommandé"),
             ("--wizard", "Assistant pas-à-pas"),
@@ -458,10 +458,10 @@ class SmartPatchHelp:
             ("--preview-only", "Aperçu sans application"),
             ("--modify-original", "Modifier fichiers originaux")
         ]
-        
+
         for option, desc in important_options:
             print(f"   {Colors.CYAN}{option:20}{Colors.END} {desc}")
-        
+
         print(f"\n{Colors.BLUE}WORKFLOW RECOMMANDÉ:{Colors.END}")
         workflow = [
             "1. 🧙‍♂️ smart-patch --wizard (première fois)",
@@ -470,10 +470,10 @@ class SmartPatchHelp:
             "4. 🎯 smart-patch --guided patches/ output/ (application)",
             "5. 🧪 smart-patch --test (validation)"
         ]
-        
+
         for step in workflow:
             print(f"   {step}")
-    
+
     def _print_header(self):
         """En-tête principal"""
         print(f"{Colors.CYAN}{Colors.BOLD}")
@@ -483,14 +483,14 @@ class SmartPatchHelp:
         print("║                          📚 AIDE DÉTAILLÉE                                  ║")
         print("╚══════════════════════════════════════════════════════════════════════════════╝")
         print(f"{Colors.END}")
-    
+
     def _print_section_header(self, title: str):
         """En-tête de section"""
         print(f"\n{Colors.CYAN}{Colors.BOLD}")
         print(f"╔═══ {title} ═══╗".ljust(80, "═"))
         print(f"╚{'═' * (len(title) + 8)}╝")
         print(f"{Colors.END}")
-    
+
     def _print_synopsis(self):
         """Synopsis d'utilisation"""
         print(f"{Colors.BOLD}📋 SYNOPSIS:{Colors.END}")
@@ -499,37 +499,37 @@ class SmartPatchHelp:
         print(f"   {Colors.GREEN}smart-patch --wizard{Colors.END}")
         print(f"   {Colors.GREEN}smart-patch PATCH_FILE DESTINATION --target TARGET_FILE{Colors.END}")
         print()
-        
+
         print(f"{Colors.BLUE}📝 DESCRIPTION:{Colors.END}")
         print("Smart Patch Processor applique intelligemment des patches avec détection")
         print("automatique des fichiers cibles, correction des numéros de ligne, et")
         print("fonctionnalités avancées de sécurité et rollback.")
         print()
-    
+
     def _print_modes(self):
         """Modes d'utilisation"""
         print(f"{Colors.BOLD}🎯 MODES D'UTILISATION:{Colors.END}")
-        
+
         modes = [
             ("🎯 Mode Guidé", "--guided", "Recommandé pour tous - Interface sécurisée pas-à-pas"),
             ("🧙‍♂️ Mode Assistant", "--wizard", "Parfait pour débuter - Guide interactif complet"),
             ("⚡ Mode Standard", "(défaut)", "Traitement direct - Pour utilisateurs expérimentés"),
             ("🔧 Mode Expert", "--config", "Contrôle total - Configuration personnalisée"),
         ]
-        
+
         for mode, flag, desc in modes:
             print(f"\n   {Colors.CYAN}{mode}{Colors.END}")
             print(f"      Flag: {Colors.YELLOW}{flag}{Colors.END}")
             print(f"      📝 {desc}")
-        
+
         print(f"\n   {Colors.PURPLE}💡 Conseil: Commencez toujours par --wizard si vous débutez !{Colors.END}")
         print()
-    
+
     def _print_common_options(self):
         """Options communes"""
         print(f"{Colors.BOLD}⚙️ OPTIONS PRINCIPALES:{Colors.END}")
         print()
-        
+
         option_groups = [
             {
                 "title": "🎯 Options de Mode",
@@ -577,18 +577,18 @@ class SmartPatchHelp:
                 ]
             }
         ]
-        
+
         for group in option_groups:
             print(f"{Colors.YELLOW}{group['title']}:{Colors.END}")
             for option, desc in group['options']:
                 print(f"   {Colors.CYAN}{option:20}{Colors.END} {desc}")
             print()
-    
+
     def _print_examples(self):
         """Exemples d'utilisation"""
         print(f"{Colors.BOLD}💡 EXEMPLES COURANTS:{Colors.END}")
         print()
-        
+
         examples = [
             {
                 "title": "🔰 Premier usage (recommandé)",
@@ -631,18 +631,18 @@ class SmartPatchHelp:
                 "desc": "Appel direct Python avec configuration experte"
             }
         ]
-        
+
         for example in examples:
             print(f"{Colors.GREEN}{example['title']}:{Colors.END}")
             print(f"   {Colors.CYAN}$ {example['cmd']}{Colors.END}")
             print(f"   💡 {example['desc']}")
             print()
-    
+
     def _print_troubleshooting(self):
         """Section dépannage rapide"""
         print(f"{Colors.BOLD}🔧 DÉPANNAGE RAPIDE:{Colors.END}")
         print()
-        
+
         quick_fixes = [
             ("❌ 'Command not found'", "Exécutez: ./install_script.sh puis rechargez votre shell"),
             ("❌ 'Fichier cible non détecté'", "Utilisez: --target FICHIER ou --wizard pour diagnostic"),
@@ -650,19 +650,19 @@ class SmartPatchHelp:
             ("⚠️ 'Numéros de ligne incorrects'", "Normal ! La correction automatique est activée"),
             ("🐌 'Traitement lent'", "Utilisez: --config fast.json ou --batch-mode"),
         ]
-        
+
         for problem, solution in quick_fixes:
             print(f"   {Colors.RED}{problem}{Colors.END}")
             print(f"   🔧 {solution}")
             print()
-        
+
         print(f"{Colors.PURPLE}🆘 Pour aide détaillée: smart-patch --help troubleshooting{Colors.END}")
         print()
-    
+
     def _print_footer(self):
         """Pied de page"""
         print(f"{Colors.BOLD}📚 AIDE SPÉCIALISÉE:{Colors.END}")
-        
+
         specialized_help = [
             ("smart-patch --help guided", "🎯 Aide détaillée du mode guidé"),
             ("smart-patch --help wizard", "🧙‍♂️ Aide du mode assistant"),
@@ -672,10 +672,10 @@ class SmartPatchHelp:
             ("smart-patch --help advanced", "🚀 Fonctionnalités avancées"),
             ("smart-patch --help quick", "⚡ Référence rapide"),
         ]
-        
+
         for cmd, desc in specialized_help:
             print(f"   {Colors.CYAN}{cmd:35}{Colors.END} {desc}")
-        
+
         print()
         print(f"{Colors.YELLOW}🌟 PREMIÈRE FOIS ? Commencez par:{Colors.END}")
         print(f"   {Colors.GREEN}smart-patch --wizard{Colors.END}")
@@ -688,7 +688,7 @@ class SmartPatchHelp:
 def show_help(help_type: str = "main"):
     """Point d'entrée principal pour l'aide"""
     help_system = SmartPatchHelp()
-    
+
     help_types = {
         "main": help_system.show_main_help,
         "guided": help_system.show_guided_help,
@@ -699,7 +699,7 @@ def show_help(help_type: str = "main"):
         "advanced": help_system.show_advanced_help,
         "quick": help_system.show_quick_reference,
     }
-    
+
     if help_type in help_types:
         help_types[help_type]()
     else:
@@ -711,21 +711,21 @@ def show_help(help_type: str = "main"):
 # Intégration dans main.py - Ajoutez ceci à votre main.py existant
 def enhance_argument_parser(parser):
     """Améliore l'argument parser avec le nouveau système d'aide"""
-    
+
     # Sous-commande help spécialisée
     help_subparser = parser.add_subparsers(dest='help_command', help='Aide spécialisée')
-    
-    help_parser = help_subparser.add_parser('help', help='Système d'aide avancé')
+
+    help_parser = help_subparser.add_parser('help', help="Système d'aide avancé")
     help_parser.add_argument('topic', nargs='?', default='main',
-                           choices=['main', 'guided', 'wizard', 'examples', 'config', 
+                           choices=['main', 'guided', 'wizard', 'examples', 'config',
                                    'troubleshooting', 'advanced', 'quick'],
                            help='Sujet d\'aide spécifique')
-    
+
     # Override de --help pour plus de détails
     parser.add_argument('--help-topic', choices=['guided', 'wizard', 'examples', 'config',
                                                 'troubleshooting', 'advanced', 'quick'],
                        help='Affiche l\'aide sur un sujet spécifique')
-    
+
     return parser
 
 
@@ -743,35 +743,35 @@ def handle_help_command(args):
 # Exemple d'intégration dans votre main() existant
 def main_with_enhanced_help():
     """Version améliorée de main() avec système d'aide avancé"""
-    
+
     parser = argparse.ArgumentParser(
         description="Smart Patch Processor v2.0 - Traitement intelligent de patches",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         add_help=False  # On gère --help nous-mêmes
     )
-    
+
     # Améliorer le parser
     parser = enhance_argument_parser(parser)
-    
+
     # Ajouter --help personnalisé
     parser.add_argument('-h', '--help', action='store_true',
                        help='Affiche cette aide détaillée')
-    
+
     # Vos arguments existants...
     parser.add_argument('source', nargs='?', help='Dossier de patches ou fichier patch unique')
     parser.add_argument('output', nargs='?', help='Dossier de destination')
     # ... autres arguments
-    
+
     args = parser.parse_args()
-    
+
     # Gérer les commandes d'aide en premier
     if args.help:
         show_help('main')
         sys.exit(0)
-    
+
     if handle_help_command(args):
         sys.exit(0)
-    
+
     # Votre logique main() existante...
     # ... reste de votre code
 
@@ -779,7 +779,7 @@ def main_with_enhanced_help():
 if __name__ == "__main__":
     # Test du système d'aide
     import argparse
-    
+
     if len(sys.argv) > 1:
         help_type = sys.argv[1]
         show_help(help_type)
