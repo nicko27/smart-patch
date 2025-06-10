@@ -55,12 +55,11 @@ class LineNumberCorrector:
         
         if corrections_made > 0:
             self.logger.debug(f"{corrections_made} correction(s) de numéro de ligne effectuée(s)")
+            
+        return '\n'.join(corrected_lines)
         
             
-            i += 1
         
-            self.logger.debug(f"{corrections_made} correction(s) de numéro de ligne effectuée(s)")
-        return '\n'.join(corrected_lines)
     
 
     def _fix_single_header(self, header_line: str, diff_lines: List[str], 

@@ -5,8 +5,6 @@ import glob
 import logging
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
-from unittest.mock import patch, mock_open
-import stat
 
 from git_integration import GitIntegration
 from patch_processor_config import PatchProcessorConfig

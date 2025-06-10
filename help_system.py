@@ -712,14 +712,10 @@ def show_help(help_type: str = "main"):
 def enhance_argument_parser(parser):
     """Améliore l'argument parser avec le nouveau système d'aide - VERSION CORRIGÉE"""
 
-    # Sous-commande help spécialisée
-    help_subparser = parser.add_subparsers(dest='help_command', help='Aide spécialisée')
-
-    help_parser = help_subparser.add_parser('help', help="Système d'aide avancé")
-    help_parser.add_argument('topic', nargs='?', default='main',
-                           choices=['main', 'guided', 'wizard', 'examples', 'config',
-                                   'troubleshooting', 'advanced', 'quick'],
-                           help='Sujet d\'aide spécifique')
+    # CORRECTION : Éviter les conflits avec subparsers
+    if not hasattr(parser, "_subparsers"):
+        help_subparser = parser.add_subparsers(dest="help_command", help="Aide spécialisée")
+        help_parser = help_subparser.add_parser("help", help="Système d'aide avancé")
 
     # CORRECTION : Utiliser un nom différent pour éviter le conflit
     # Au lieu de --help-topic, utiliser --topic-help

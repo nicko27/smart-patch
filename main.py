@@ -11,6 +11,20 @@ from unittest.mock import patch, mock_open
 import traceback
 
 # Imports du système de base
+
+# Protection contre les erreurs d'import manquantes
+def safe_import(module_name, fallback=None):
+    try:
+        return __import__(module_name)
+    except ImportError:
+        return fallback
+
+# Protection contre les erreurs d'import manquantes
+def safe_import(module_name, fallback=None):
+    try:
+        return __import__(module_name)
+    except ImportError:
+        return fallback
 from dummy_cache import DummyCache
 from circular_buffer import CircularBuffer
 from file_permissions import FilePermissions

@@ -38,7 +38,14 @@ class RollbackManager:
     def _init_database(self):
         """Initialise la base de données SQLite"""
         conn = sqlite3.connect(self.db_path)
-        create_table_sql = " CREATE TABLE IF NOT EXISTS operations (id INTEGER PRIMARY KEY AUTOINCREMENT,timestamp TEXT NOT NULL,target_file TEXT NOT NULL,backup_path TEXT NOT NULL, status TEXT DEFAULT 'active')"
+create_table_sql = """
+            CREATE TABLE IF NOT EXISTS operations (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp TEXT NOT NULL,
+                target_file TEXT NOT NULL,
+                backup_path TEXT NOT NULL,
+                status TEXT DEFAULT 'active'
+            )"""
         conn.execute(create_table_sql)
         conn.commit()
         conn.close()

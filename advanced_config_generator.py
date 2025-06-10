@@ -978,3 +978,12 @@ def run_config_generator_advanced():
     """Point d'entrée pour le générateur avancé"""
     generator = AdvancedConfigGenerator()
     return generator.run()
+def run_config_generator_advanced():
+    """Point d'entrée pour le générateur avancé"""
+    generator = AdvancedConfigGenerator()
+    return generator.run()
+
+def run_config_generator_advanced():
+    """Point d'entrée pour le générateur avancé"""
+    generator = AdvancedConfigGenerator()
+    return generator.run()

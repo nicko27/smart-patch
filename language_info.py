@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 
 from language_type import LanguageType
 
+@dataclass
 class LanguageInfo:
     """Informations sur un langage"""
     name: str

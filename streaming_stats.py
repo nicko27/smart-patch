@@ -1,6 +1,7 @@
 """Module streaming_stats.py - Classe StreamingStats."""
 
 from dataclasses import dataclass, field
+@dataclass
 class StreamingStats:
     """Statistiques de performance du streaming"""
     files_processed: int = 0

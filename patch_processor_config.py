@@ -1,7 +1,10 @@
 """Module patch_processor_config.py - Configuration YAML améliorée."""
 
 import json
-import yaml
+try:
+    import yaml
+except ImportError:
+    yaml = None
 import logging
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
@@ -64,6 +67,9 @@ class PatchProcessorConfig:
                 
                 # Détecter le format
                 if config_path.suffix.lower() in ['.yaml', '.yml']:
+                    if yaml is None:
+                        print(f"⚠️ PyYAML non disponible, tentative JSON pour {config_path}")
+                        return json.loads(content)
                     return yaml.safe_load(content)
                 elif config_path.suffix.lower() == '.json':
                     return json.loads(content)
@@ -242,6 +248,8 @@ class PatchProcessorConfig:
             
             with open(output_path, 'w', encoding='utf-8') as f:
                 if format.lower() in ['yaml', 'yml']:
+                    if yaml is None:
+                        raise Exception("PyYAML requis pour le format YAML")
                     yaml.dump(self.config, f, default_flow_style=False, 
                              allow_unicode=True, sort_keys=False, indent=2)
                 else:

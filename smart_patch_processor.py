@@ -253,13 +253,6 @@ class SmartPatchProcessor:
                 except Exception as e:
                     self.logger.debug(f"Erreur non-critique ignorée: {e}")
             
-            # Restaurer les permissions en cas d'erreur si configuré
-            if self.permission_manager.config.auto_restore_on_failure and target_file:
-                try:
-                    self.permission_manager.restore_file_permissions(target_file)
-                    self.user_message(f"Permissions restaurées pour {target_file.name} après erreur", "info")
-                except Exception as e:
-                    self.logger.debug(f"Erreur non-critique ignorée: {e}")
         
         return result
     
@@ -338,21 +331,7 @@ class SmartPatchProcessor:
             self.logger.error(f"Erreur lors de l'application cumulative: {e}")
             result.errors.append(str(e))
             
-            # Restaurer les permissions en cas d'erreur si configuré
-            if self.permission_manager.config.auto_restore_on_failure and target_file:
-                try:
-                    self.permission_manager.restore_file_permissions(target_file)
-                    self.user_message(f"Permissions restaurées pour {target_file.name} après erreur", "info")
-                except Exception as e:
-                    self.logger.debug(f"Erreur non-critique ignorée: {e}")
             
-            # Restaurer les permissions en cas d'erreur si configuré
-            if self.permission_manager.config.auto_restore_on_failure and target_file:
-                try:
-                    self.permission_manager.restore_file_permissions(target_file)
-                    self.user_message(f"Permissions restaurées pour {target_file.name} après erreur", "info")
-                except Exception as e:
-                    self.logger.debug(f"Erreur non-critique ignorée: {e}")
         
         return result
     
