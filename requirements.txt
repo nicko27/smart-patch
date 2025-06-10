@@ -1,0 +1,28 @@
+# Smart Patch Processor v2.0 - Dépendances
+
+# === DÉPENDANCES OPTIONNELLES ===
+# Décommentez selon vos besoins
+
+# Support configuration YAML (optionnel)
+# PyYAML>=5.1
+
+# Analyse syntaxique Python avancée (optionnel)
+# libcst>=0.4.0
+
+# === DÉPENDANCES DE DÉVELOPPEMENT ===
+# Pour les développeurs uniquement
+
+# Tests
+# pytest>=6.0
+# pytest-cov
+
+# Formatage de code
+# black>=22.0
+# flake8>=4.0
+
+# Vérification de types
+# mypy>=0.950
+
+# === NOTES ===
+# Smart Patch Processor fonctionne sans aucune dépendance externe !
+# Toutes les dépendances sont optionnelles pour des fonctionnalités avancées.
