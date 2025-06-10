@@ -1,0 +1,70 @@
+#!/usr/bin/env python3
+"""Smart Patch Processor v2.0 - Script Exécutable"""
+
+import sys
+import os
+from pathlib import Path
+
+def main():
+    # Chemins possibles pour les modules
+    possible_paths = [
+        # 1. Installation locale (développement)
+        Path(__file__).parent.absolute(),
+        # 2. Installation globale système
+        Path("/usr/local/lib/smart-patch-processor"),
+        # 3. Installation pip utilisateur
+        Path.home() / ".local/lib/python3.*/site-packages/smart-patch-processor",
+        # 4. Installation pip système
+        Path("/usr/local/lib/python3.*/site-packages/smart-patch-processor"),
+    ]
+    
+    # Rechercher le répertoire contenant main.py
+    script_dir = None
+    for path in possible_paths:
+        # Gérer les wildcards pour les versions Python
+        if "*" in str(path):
+            import glob
+            for expanded_path in glob.glob(str(path)):
+                expanded_path = Path(expanded_path)
+                if (expanded_path / "main.py").exists():
+                    script_dir = expanded_path
+                    break
+        else:
+            if (path / "main.py").exists():
+                script_dir = path
+                break
+        
+        if script_dir:
+            break
+    
+    if not script_dir:
+        print("❌ Erreur: Impossible de localiser les modules Smart Patch Processor")
+        print("Chemins vérifiés:")
+        for path in possible_paths:
+            print(f"  - {path}")
+        print("\n💡 Solutions possibles:")
+        print("  1. Réinstaller avec: ./install_script.sh")
+        print("  2. Installer via pip: pip3 install ./")
+        print("  3. Exécuter depuis le répertoire source: python3 main.py")
+        sys.exit(1)
+    
+    # Ajouter au Python path
+    if str(script_dir) not in sys.path:
+        sys.path.insert(0, str(script_dir))
+    
+    try:
+        from main import main as smart_patch_main
+        smart_patch_main()
+    except ImportError as e:
+        print(f"❌ Erreur d'import: {e}")
+        print(f"Répertoire utilisé: {script_dir}")
+        print("Fichiers disponibles:")
+        for file in script_dir.glob("*.py"):
+            print(f"  - {file.name}")
+        sys.exit(1)
+    except Exception as e:
+        print(f"❌ Erreur d'exécution: {e}")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()
