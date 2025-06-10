@@ -172,12 +172,10 @@ Smart Patch Processor v2.0 - Traitement intelligent de patches avec mode guidé
     help_group.add_argument('--version', action='version',
                            version='Smart Patch Processor v2.0')
 
-    # Intégrer le système d'aide avancé si disponible
+    # Intégrer le système d'aide avancé si disponible - CORRECTION DU CONFLIT
     if ENHANCED_HELP_AVAILABLE:
-        help_group.add_argument('--help-topic',
-                               choices=['guided', 'wizard', 'examples', 'config',
-                                       'troubleshooting', 'advanced', 'quick'],
-                               help='Affiche l\'aide sur un sujet spécifique')
+        # SUPPRIMER LA LIGNE CONFLICTUELLE qui est déjà définie dans enhance_argument_parser
+        # help_group.add_argument('--help-topic', ...)  # <- Cette ligne causait le conflit
         parser = enhance_argument_parser(parser)
 
     return parser

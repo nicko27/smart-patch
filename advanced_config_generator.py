@@ -2,6 +2,7 @@
 """
 Générateur de Configuration Avancé pour Smart Patch Processor v2.0
 Version YAML améliorée avec support ~/.config/smart-patch/
+VERSION CORRIGÉE - Fix du bug NoneType
 """
 
 import os
@@ -274,7 +275,11 @@ class AdvancedConfigGenerator:
                 print(f"{spaces}{key}: {value}")
     
     def _configure_detection(self, current: Dict = None) -> Dict:
-        """Configure la détection"""
+        """Configure la détection - VERSION CORRIGÉE"""
+        # FIX: S'assurer que current est un dict valide
+        if current is None:
+            current = {}
+        
         config = current.copy() if current else {}
         
         print("Extensions de fichiers :")
@@ -309,7 +314,11 @@ class AdvancedConfigGenerator:
         return config
     
     def _configure_security(self, current: Dict = None) -> Dict:
-        """Configure la sécurité"""
+        """Configure la sécurité - VERSION CORRIGÉE"""
+        # FIX: S'assurer que current est un dict valide
+        if current is None:
+            current = {}
+            
         config = current.copy() if current else {}
         
         print("Niveau de sécurité :")
@@ -356,7 +365,11 @@ class AdvancedConfigGenerator:
         return config
     
     def _configure_guided_patching(self, current: Dict = None) -> Dict:
-        """Configure le patchage guidé"""
+        """Configure le patchage guidé - VERSION CORRIGÉE"""
+        # FIX: S'assurer que current est un dict valide
+        if current is None:
+            current = {}
+            
         config = current.copy() if current else {}
         
         config['enabled'] = self._get_yes_no("Activer le mode guidé par défaut", 
@@ -387,7 +400,11 @@ class AdvancedConfigGenerator:
         return config
     
     def _configure_logging(self, current: Dict = None) -> Dict:
-        """Configure le logging"""
+        """Configure le logging - VERSION CORRIGÉE"""
+        # FIX: S'assurer que current est un dict valide
+        if current is None:
+            current = {}
+            
         config = current.copy() if current else {}
         
         print("Niveau de logging :")
@@ -414,7 +431,11 @@ class AdvancedConfigGenerator:
         return config
     
     def _configure_performance(self, current: Dict = None) -> Dict:
-        """Configure les performances"""
+        """Configure les performances - VERSION CORRIGÉE"""
+        # FIX: S'assurer que current est un dict valide
+        if current is None:
+            current = {}
+            
         config = current.copy() if current else {}
         
         config['max_concurrent_patches'] = self._get_number("Patches simultanés", 1, 10, 
@@ -682,9 +703,9 @@ class AdvancedConfigGenerator:
         config = {
             'detection': {
                 'search_patterns': [
-                    r"---\\s+(.+)",
-                    r"\\+\\+\\+\\s+(.+)",
-                    r"Index:\\s+(.+)",
+                    r"---\s+(.+)",
+                    r"\+\+\+\s+(.+)",
+                    r"Index:\s+(.+)",
                     r"diff --git a/(.+) b/(.+)"
                 ],
                 'file_extensions': ['.py', '.js', '.ts', '.jsx', '.tsx', '.php', '.java', '.cpp', '.c', '.go', '.rs'],

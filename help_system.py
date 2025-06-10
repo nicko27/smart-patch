@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Smart Patch Processor v2.0 - Système d'aide détaillé et coloré
-Module help_system.py
+Module help_system.py - VERSION CORRIGÉE
 """
 
 import sys
@@ -656,7 +656,7 @@ class SmartPatchHelp:
             print(f"   🔧 {solution}")
             print()
 
-        print(f"{Colors.PURPLE}🆘 Pour aide détaillée: smart-patch --help troubleshooting{Colors.END}")
+        print(f"{Colors.PURPLE}🆘 Pour aide détaillée: smart-patch --help-topic troubleshooting{Colors.END}")
         print()
 
     def _print_footer(self):
@@ -664,13 +664,13 @@ class SmartPatchHelp:
         print(f"{Colors.BOLD}📚 AIDE SPÉCIALISÉE:{Colors.END}")
 
         specialized_help = [
-            ("smart-patch --help guided", "🎯 Aide détaillée du mode guidé"),
-            ("smart-patch --help wizard", "🧙‍♂️ Aide du mode assistant"),
-            ("smart-patch --help examples", "📚 Exemples détaillés par situation"),
-            ("smart-patch --help config", "⚙️ Guide de configuration avancée"),
-            ("smart-patch --help troubleshooting", "🔧 Guide de dépannage complet"),
-            ("smart-patch --help advanced", "🚀 Fonctionnalités avancées"),
-            ("smart-patch --help quick", "⚡ Référence rapide"),
+            ("smart-patch --help-topic guided", "🎯 Aide détaillée du mode guidé"),
+            ("smart-patch --help-topic wizard", "🧙‍♂️ Aide du mode assistant"),
+            ("smart-patch --help-topic examples", "📚 Exemples détaillés par situation"),
+            ("smart-patch --help-topic config", "⚙️ Guide de configuration avancée"),
+            ("smart-patch --help-topic troubleshooting", "🔧 Guide de dépannage complet"),
+            ("smart-patch --help-topic advanced", "🚀 Fonctionnalités avancées"),
+            ("smart-patch --help-topic quick", "⚡ Référence rapide"),
         ]
 
         for cmd, desc in specialized_help:
@@ -708,9 +708,9 @@ def show_help(help_type: str = "main"):
         help_system.show_main_help()
 
 
-# Intégration dans main.py - Ajoutez ceci à votre main.py existant
+# Intégration dans main.py - VERSION CORRIGÉE SANS CONFLIT
 def enhance_argument_parser(parser):
-    """Améliore l'argument parser avec le nouveau système d'aide"""
+    """Améliore l'argument parser avec le nouveau système d'aide - VERSION CORRIGÉE"""
 
     # Sous-commande help spécialisée
     help_subparser = parser.add_subparsers(dest='help_command', help='Aide spécialisée')
@@ -721,21 +721,23 @@ def enhance_argument_parser(parser):
                                    'troubleshooting', 'advanced', 'quick'],
                            help='Sujet d\'aide spécifique')
 
-    # Override de --help pour plus de détails
-    parser.add_argument('--help-topic', choices=['guided', 'wizard', 'examples', 'config',
-                                                'troubleshooting', 'advanced', 'quick'],
+    # CORRECTION : Utiliser un nom différent pour éviter le conflit
+    # Au lieu de --help-topic, utiliser --topic-help
+    parser.add_argument('--topic-help', 
+                       choices=['guided', 'wizard', 'examples', 'config',
+                               'troubleshooting', 'advanced', 'quick'],
                        help='Affiche l\'aide sur un sujet spécifique')
 
     return parser
 
 
 def handle_help_command(args):
-    """Gère les commandes d'aide"""
+    """Gère les commandes d'aide - VERSION CORRIGÉE"""
     if hasattr(args, 'help_command') and args.help_command == 'help':
         show_help(args.topic)
         return True
-    elif hasattr(args, 'help_topic') and args.help_topic:
-        show_help(args.help_topic)
+    elif hasattr(args, 'topic_help') and args.topic_help:  # CORRECTION: topic_help au lieu de help_topic
+        show_help(args.topic_help)
         return True
     return False
 
