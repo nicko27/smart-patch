@@ -2,6 +2,7 @@
 
 from pathlib import Path
 from dataclasses import dataclass, field
+
 @dataclass
 class PermissionConfig:
     """Configuration pour la gestion des permissions"""

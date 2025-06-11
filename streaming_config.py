@@ -1,6 +1,7 @@
 """Module streaming_config.py - Classe StreamingConfig."""
 
 from dataclasses import dataclass, field
+
 @dataclass
 class StreamingConfig:
     """Configuration pour le streaming de fichiers"""
