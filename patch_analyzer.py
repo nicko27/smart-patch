@@ -1,12 +1,12 @@
+from typing import Any, Dict, List, Optional, Protocol, Tuple, Union
 """Module patch_analyzer.py - Classe PatchAnalyzer."""
 
 import re
 import logging
-from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
 
 from patch_processor_config import PatchProcessorConfig
-from issue_type import IssueType
-from patch_issue import PatchIssue
+from core_types import IssueType
+from core_types import PatchIssue
 
 class PatchAnalyzer:
     """Analyse les patches et détecte les problèmes"""

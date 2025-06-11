@@ -1,9 +1,9 @@
+from typing import Any, List, Optional
 """
 Gestionnaire d'erreurs centralisé pour Smart Patch Processor
 """
 
 import logging
-from typing import List, Optional, Any
 from enum import Enum
 from dataclasses import dataclass
 from datetime import datetime

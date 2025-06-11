@@ -1,8 +1,8 @@
+from typing import Any, Dict, List, Optional, Protocol, Tuple, Union
 """Module line_number_corrector.py - Classe LineNumberCorrector."""
 
 import re
 import logging
-from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
 import difflib
 
 from patch_processor_config import PatchProcessorConfig

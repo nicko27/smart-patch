@@ -1,9 +1,9 @@
+from typing import Any, Dict, Optional, Protocol
 """
 Module de coordination sécurisé pour éviter les imports circulaires
 """
 
 import logging
-from typing import Dict, Any, Optional, Protocol
 from pathlib import Path
 
 

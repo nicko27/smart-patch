@@ -1,8 +1,8 @@
+from typing import Any, Dict, List, Optional, Protocol, Tuple, Union
 """Module patch_previewer.py - Classe PatchPreviewer."""
 
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
 
 from patch_processor_config import PatchProcessorConfig
 from colors import Colors

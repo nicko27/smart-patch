@@ -1,8 +1,8 @@
+from typing import Dict, List, Optional
 """Module processing_result.py - Classe ProcessingResult."""
 
-from typing import Dict, List, Optional
 from dataclasses import dataclass, field
-from patch_issue import PatchIssue
+from core_types import PatchIssue
 
 @dataclass
 class ProcessingResult:

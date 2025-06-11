@@ -1,10 +1,10 @@
+from typing import Any, Dict, List, Optional, Protocol, Tuple, Union
 """Module rollback_manager.py - Classe RollbackManager."""
 
 import shutil
 import sqlite3
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
 from datetime import datetime
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta

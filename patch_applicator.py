@@ -1,8 +1,8 @@
+from typing import Any, Dict, List, Optional, Tuple
 """Module patch_applicator.py - Version corrigée et sécurisée"""
 
 import re
 import logging
-from typing import Dict, List, Optional, Any, Tuple
 from pathlib import Path
 
 from patch_processor_config import PatchProcessorConfig

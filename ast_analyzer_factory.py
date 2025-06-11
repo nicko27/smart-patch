@@ -1,10 +1,10 @@
+from typing import Any, Dict, List, Optional, Protocol, Tuple, Union
 """Module ast_analyzer_factory.py - Classe ASTAnalyzerFactory."""
 
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
 
-from language_type import LanguageType
+from core_types import LanguageType
 
 class ASTAnalyzerFactory:
     """Factory pour créer les analyseurs AST appropriés selon le langage"""

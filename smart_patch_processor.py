@@ -1,3 +1,4 @@
+from typing import Any, Dict, List, Optional, Protocol, Tuple, Union
 """Module smart_patch_processor.py - Classe SmartPatchProcessor."""
 
 import glob
@@ -5,27 +6,26 @@ import json
 import yaml
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
 from datetime import datetime
 from datetime import datetime, timedelta
 import stat
 
 from processing_result import ProcessingResult
 from permission_config import PermissionConfig
-from streaming_config import StreamingConfig
+from streaming_system import StreamingConfig
 from patch_analyzer import PatchAnalyzer
 from git_integration import GitIntegration
 from patch_processor_config import PatchProcessorConfig
 from target_file_detector import TargetFileDetector
 from wizard_mode import WizardMode
-from streaming_manager import StreamingManager
+from streaming_system import StreamingManager
 from patch_applicator import PatchApplicator
 from permission_manager import PermissionManager
 from patch_previewer import PatchPreviewer
 from processing_coordinator import ProcessingCoordinator
 from rollback_manager import RollbackManager
 from interactive_cli import InteractiveCLI
-from patch_issue import PatchIssue
+from core_types import PatchIssue
 from colors import Colors
 from line_number_corrector import LineNumberCorrector
 

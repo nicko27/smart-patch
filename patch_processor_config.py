@@ -1,3 +1,4 @@
+from typing import Any, Dict, List, Optional, Protocol, Tuple, Union
 """Module patch_processor_config.py - Configuration YAML améliorée."""
 
 import json
@@ -7,7 +8,6 @@ except ImportError:
     yaml = None
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
 
 class PatchProcessorConfig:
     """Configuration externalisée pour le processeur de patches avec support YAML amélioré"""
@@ -62,30 +62,48 @@ class PatchProcessorConfig:
         return self._load_config_file_secure(config_path)
     
     def _load_config_file_secure(self, config_path: Path) -> Optional[Dict]:
-        """Charge un fichier de configuration (YAML ou JSON)"""
+        """Charge un fichier de configuration (YAML ou JSON) de manière sécurisée"""
         try:
             with open(config_path, 'r', encoding='utf-8') as f:
                 content = f.read().strip()
                 if not content:
                     return None
                 
-                # Détecter le format
+                # Vérifier la taille pour éviter DoS
+                if len(content.encode('utf-8')) > 10 * 1024 * 1024:  # 10MB max
+                    raise ValueError("Config file too large")
+                
+                # Détecter le format et parser sécurisé
                 if config_path.suffix.lower() in ['.yaml', '.yml']:
                     if yaml is None:
                         print(f"⚠️ PyYAML non disponible, tentative JSON pour {config_path}")
                         return json.loads(content)
-                    return self._load_yaml_secure(content)
+                    
+                    # Utiliser safe_load directement (pas de méthode séparée)
+                    config = yaml.safe_load(content)
+                    
+                    # Validation de base
+                    if not isinstance(config, dict):
+                        raise ValueError("Config must be a dictionary")
+                    
+                    return config
+                    
                 elif config_path.suffix.lower() == '.json':
                     return json.loads(content)
                 else:
                     # Essayer YAML d'abord, puis JSON
                     try:
-                        return self._load_yaml_secure(content)
-                    except yaml.YAMLError:
+                        if yaml:
+                            return yaml.safe_load(content)
+                        else:
+                            return json.loads(content)
+                    except Exception:
                         return json.loads(content)
-        except Exception:
+                        
+        except Exception as e:
+            print(f"⚠️ Erreur chargement {config_path}: {e}")
             return None
-    
+
     def _get_default_config(self) -> Dict:
         """Retourne la configuration par défaut"""
         return {

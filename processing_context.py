@@ -1,6 +1,6 @@
+from typing import Any, Dict, List, Optional, Protocol, Tuple, Union
 """Module processing_context.py - Classe ProcessingContext."""
 
-from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
 class ProcessingContext:
     """Contexte partagé entre les étapes du pipeline"""
     

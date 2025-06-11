@@ -1,9 +1,9 @@
+from typing import Any, Dict, List, Optional
 """
 Gestionnaire central du Smart Patch Processor
 Coordonne tous les composants et évite les couplages forts
 """
 
-from typing import Dict, Any, Optional, List
 from pathlib import Path
 import logging
 
@@ -113,7 +113,7 @@ class ProcessorManager:
                 component_class = getattr(module, class_name)
                 
                 if name == 'streaming_manager':
-                    from streaming_config import StreamingConfig
+                    from streaming_system import StreamingConfig
                     component = component_class(StreamingConfig())
                 else:
                     component = component_class(config)

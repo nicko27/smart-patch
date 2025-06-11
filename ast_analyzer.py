@@ -1,10 +1,10 @@
+from typing import Any, Dict, List, Optional, Protocol, Tuple, Union
 """Module ast_analyzer.py - Classe ASTAnalyzer."""
 
 import ast
 import re
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
 import libcst as cst
 
 from patch_processor_config import PatchProcessorConfig

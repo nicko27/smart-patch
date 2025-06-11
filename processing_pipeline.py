@@ -1,6 +1,6 @@
+from typing import Any, Dict, List, Optional, Protocol, Tuple, Union
 """Module processing_pipeline.py - Classe ProcessingPipeline."""
 
-from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
 
 from processing_context import ProcessingContext
 from processing_result import ProcessingResult

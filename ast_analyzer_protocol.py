@@ -1,8 +1,8 @@
+from typing import Any, Dict, List, Optional, Protocol, Tuple, Union
 """Module ast_analyzer_protocol.py - Classe ASTAnalyzerProtocol."""
 
-from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
 
-from language_info import LanguageInfo
+from core_types import LanguageInfo
 
 class ASTAnalyzerProtocol(Protocol):
     """Protocole pour tous les analyseurs AST"""

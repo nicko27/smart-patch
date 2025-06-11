@@ -1,3 +1,4 @@
+from typing import Dict, List, Optional
 #!/usr/bin/env python3
 """
 Smart Patch Processor v2.0 - Système d'aide détaillé et coloré
@@ -7,7 +8,6 @@ Module help_system.py - VERSION CORRIGÉE
 import sys
 import os
 from pathlib import Path
-from typing import Dict, List, Optional
 
 # Import du système de couleurs
 try:

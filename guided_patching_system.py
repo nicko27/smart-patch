@@ -1,9 +1,9 @@
+from typing import Dict, List, Optional
 #!/usr/bin/env python3
 """Système de patchage guidé pour Smart Patch Processor"""
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Optional
 from colors import Colors
 
 @dataclass

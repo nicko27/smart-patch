@@ -1,8 +1,8 @@
+from typing import Any, Dict, List, Optional, Protocol, Tuple, Union
 """Module processing_coordinator.py - Classe ProcessingCoordinator."""
 
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
 
 from read_patch_step import ReadPatchStep
 from detect_target_step import DetectTargetStep

@@ -1,9 +1,9 @@
+from typing import Any, Dict, List, Optional, Protocol, Tuple, Union
 """Module permission_reader.py - Classe PermissionReader."""
 
 import os
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
 import pwd
 import grp
 

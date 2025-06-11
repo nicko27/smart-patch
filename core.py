@@ -1,9 +1,9 @@
+from typing import Any, Dict, Optional, Protocol
 """
 Module central pour éviter les imports circulaires
 Contient les interfaces et composants partagés
 """
 
-from typing import Dict, Any, Optional, Protocol
 from pathlib import Path
 
 

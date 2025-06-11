@@ -1,6 +1,6 @@
+from typing import Dict, List
 """Module step_result.py - Classe StepResult."""
 
-from typing import Dict, List
 from dataclasses import dataclass, field
 
 @dataclass

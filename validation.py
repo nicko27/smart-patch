@@ -1,3 +1,4 @@
+from typing import List, Optional, Union
 """
 Module de validation d'entrée pour Smart Patch Processor
 Centralise toutes les validations pour éviter les erreurs
@@ -5,7 +6,6 @@ Centralise toutes les validations pour éviter les erreurs
 
 import os
 from pathlib import Path
-from typing import Union, Optional
 
 
 class ValidationError(Exception):
@@ -216,6 +216,9 @@ def sanitize_filename_secure(filename: str, max_length: int = 100) -> str:
     """Nettoyage sécurisé de nom de fichier"""
     import re
     import unicodedata
+    
+    # CORRECTION: Sauvegarder le nom original
+    original_filename = filename
 
     if not isinstance(filename, str):
         raise ValidationError(f"filename must be string, got {type(filename)}")

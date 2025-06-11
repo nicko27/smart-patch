@@ -1,9 +1,9 @@
+from typing import Any, Dict, List, Optional, Protocol, Tuple, Union
 """Module git_integration.py - Classe GitIntegration."""
 
 import subprocess
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
 
 from patch_processor_config import PatchProcessorConfig
 

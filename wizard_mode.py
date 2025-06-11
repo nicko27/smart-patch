@@ -1,10 +1,10 @@
+from typing import Any, Dict, List, Optional, Protocol, Tuple, Union
 """Module wizard_mode.py - Classe WizardMode."""
 
 import sys
 import glob
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
 
 from git_integration import GitIntegration
 from patch_processor_config import PatchProcessorConfig

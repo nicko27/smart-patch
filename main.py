@@ -25,15 +25,15 @@ def safe_import(module_name, fallback=None):
         return __import__(module_name)
     except ImportError:
         return fallback
-from dummy_cache import DummyCache
-from circular_buffer import CircularBuffer
+from cache_system import DummyCache
+from streaming_system import CircularBuffer
 from file_permissions import FilePermissions
 
 # Imports locaux du Smart Patch Processor
 from analyze_patch_step import AnalyzePatchStep
 from apply_patch_step import ApplyPatchStep
 from ast_analyzer import ASTAnalyzer
-from cache_manager import CacheManager
+from cache_system import CacheManager
 from colors import Colors
 from correct_patch_step import CorrectPatchStep
 from detect_target_step import DetectTargetStep
@@ -48,7 +48,7 @@ from permission_manager import PermissionManager
 from processing_coordinator import ProcessingCoordinator
 from rollback_manager import RollbackManager
 from smart_patch_processor import SmartPatchProcessor
-from streaming_manager import StreamingManager
+from streaming_system import StreamingManager
 from target_file_detector import TargetFileDetector
 from wizard_mode import WizardMode
 

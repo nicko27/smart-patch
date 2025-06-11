@@ -1,7 +1,7 @@
+from typing import Any, Dict, List, Optional, Protocol, Tuple, Union
 """Module platform_capabilities.py - Classe PlatformCapabilities."""
 
 import os
-from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
 import platform
 class PlatformCapabilities:
     """Détecte les capacités de gestion des permissions selon la plateforme"""

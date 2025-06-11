@@ -1,3 +1,4 @@
+from typing import Any, Dict, List, Optional, Protocol, Tuple, Union
 """Module permission_manager.py - Classe PermissionManager."""
 
 import os
@@ -5,7 +6,6 @@ import shutil
 import sqlite3
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
 from contextlib import contextmanager
 import stat
 

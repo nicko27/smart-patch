@@ -1,7 +1,7 @@
+from typing import Any, Dict, List, Optional, Protocol, Tuple, Union
 """Module file_permissions.py - Classe FilePermissions."""
 
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
 from datetime import datetime
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta

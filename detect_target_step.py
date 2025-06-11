@@ -1,7 +1,7 @@
+from typing import Any, Dict, List, Optional, Protocol, Tuple, Union
 """Module detect_target_step.py - Classe DetectTargetStep."""
 
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
 
 from processing_step import ProcessingStep
 from processing_context import ProcessingContext

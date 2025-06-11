@@ -1,3 +1,4 @@
+from typing import Any, Dict, List, Optional, Protocol, Tuple, Union
 """Module target_file_detector.py - Classe TargetFileDetector."""
 
 import os
@@ -5,7 +6,6 @@ import re
 import glob
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
 
 from patch_processor_config import PatchProcessorConfig
 
