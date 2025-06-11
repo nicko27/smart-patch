@@ -5,6 +5,7 @@ import logging
 from typing import Dict, List, Optional, Any, Tuple, Protocol, Union
 
 from patch_processor_config import PatchProcessorConfig
+from validation import validate_patch_content, ValidationError
 
 class PatchApplicator:
     """Responsable de l'application des patches avec logique complète et robuste"""
@@ -14,6 +15,13 @@ class PatchApplicator:
         self.logger = logging.getLogger('smart_patch_processor.applicator')
     
     def apply_patch(self, original_content: str, diff_content: str) -> str:
+        """Applique le patch avec validation et logique complète"""
+        # Validation d'entrée
+        try:
+            validate_patch_content(original_content, diff_content)
+        except ValidationError as e:
+            self.logger.error(f"Validation error: {e}")
+            return original_content
         """Applique le patch avec logique complète"""
         self.logger.debug("Application du patch")
         

@@ -298,19 +298,29 @@ def handle_special_modes(args):
             wizard = processor.wizard_mode
             if wizard and (wizard.is_enabled() or True):  # Force enable pour --wizard
                 result = wizard.run_wizard()
+
+                # 🔥 CORRECTION: Vérifier si le traitement a été effectué
                 if result.get('completed'):
-                    print("\n✨ Assistant terminé ! Vous pouvez maintenant utiliser le processeur normalement.")
-                    print("\n💡 Exemples d'usage:")
-                    print("   smart-patch --guided patches/ output/")
-                    print("   smart-patch single.patch output/ --target myfile.py")
+                    if result.get('processing_completed'):
+                        print("💡 Exemples d'usage pour la prochaine fois:")
+                        print("   smart-patch --guided patches/ output/")
+                        print("   smart-patch single.patch output/ --target myfile.py")
+                        return True  # Indiquer que tout est terminé
+                    else:
+                        print("✨ Configuration terminée !")
+                        print("💡 Les patches n'ont pas été appliqués automatiquement.")
+                        print("💡 Relancez avec les paramètres configurés :")
+                        print("   smart-patch --guided patches/ output/")
+                        return True
                 else:
-                    print("\n👋 À bientôt ! Lancez à nouveau avec --wizard quand vous voulez.")
-            sys.exit(0)
+                    print("👋 À bientôt ! Lancez à nouveau avec --wizard quand vous voulez.")
+                    return True
+            return True
         except Exception as e:
             print(f"❌ Erreur wizard: {e}")
             if args.verbose:
                 traceback.print_exc()
-            sys.exit(1)
+            return True  # Toujours terminer même en cas d'erreur
 
     return False
 

@@ -551,6 +551,56 @@ class SmartPatchProcessor:
         if success_count > 0:
             print(f"   • {Colors.BLUE}Fichiers générés dans: {self.output_dir}{Colors.END}")
     
+
+    def process_wizard_patches(self, selected_patches: List[Path]) -> Dict:
+        """Traite spécifiquement les patches sélectionnés par le wizard"""
+        start_time = datetime.now()
+        
+        print(f"{Colors.BLUE}📦 Traitement de {len(selected_patches)} patch(es) sélectionné(s)...{Colors.END}\n")
+        
+        results = []
+        success_count = 0
+        total_issues_fixed = 0
+        
+        for i, patch_path in enumerate(selected_patches, 1):
+            print(f"{Colors.CYAN}[{i}/{len(selected_patches)}] 📄 {patch_path.name}{Colors.END}")
+            
+            try:
+                result = self.process_single_patch(patch_path)
+                results.append(result)
+                
+                if result.success:
+                    success_count += 1
+                    issues_count = len(result.issues)
+                    total_issues_fixed += issues_count
+                    
+                    print(f"{Colors.GREEN}   ✅ Succès: {result.output_file}{Colors.END}")
+                    if issues_count > 0:
+                        print(f"{Colors.YELLOW}   🔧 {issues_count} problème(s) corrigé(s){Colors.END}")
+                else:
+                    print(f"{Colors.RED}   ❌ Échec: {', '.join(result.errors)}{Colors.END}")
+                    
+            except Exception as e:
+                print(f"{Colors.RED}   ❌ Erreur: {e}{Colors.END}")
+                
+            print()
+        
+        # Calculer le temps de traitement
+        processing_time = (datetime.now() - start_time).total_seconds()
+        
+        # Résumé final
+        self._print_summary(len(selected_patches), len(selected_patches), 
+                           success_count, total_issues_fixed, processing_time)
+        
+        return {
+            'total': len(selected_patches),
+            'groups': len(selected_patches),
+            'success': success_count,
+            'failed': len(selected_patches) - success_count,
+            'results': results,
+            'processing_time': processing_time
+        }
+
     def generate_report(self, summary: Dict) -> str:
         """Générer un rapport détaillé"""
         report_format = self.config.get('output', 'report_format', 'json')
