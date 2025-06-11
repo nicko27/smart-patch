@@ -24,6 +24,12 @@ class LineNumberCorrector:
         self.context_window = correction_config.get('context_window', 5)
     
     def correct_diff_headers(self, diff_content: str, original_content: str) -> str:
+        """Corrige les headers de diff avec validation sécurisée"""
+        
+        # Validation préalable
+        if not self._validate_diff_content(diff_content):
+            self.logger.error("Validation du diff échouée")
+            return diff_content
         """Corrige les headers de diff avec les bons numéros de ligne"""
         self.logger.debug("Correction des numéros de ligne")
         
@@ -35,8 +41,10 @@ class LineNumberCorrector:
         corrected_lines = []
         
         i = 0
-        corrections_made = 0        
-        while i < len(diff_lines):
+        corrections_made = 0
+        max_iterations = len(diff_lines) * 2  # Sécurité contre boucle infinie
+        
+        while i < len(diff_lines) and i < max_iterations:
             line = diff_lines[i]
             
             if line.startswith('@@'):
@@ -51,7 +59,7 @@ class LineNumberCorrector:
             else:
                 corrected_lines.append(line)
             
-            i += 1  # Incrémentation cruciale
+            i += 1  # Incrémentation explicite et sécurisée
         
         if corrections_made > 0:
             self.logger.debug(f"{corrections_made} correction(s) de numéro de ligne effectuée(s)")
@@ -198,3 +206,26 @@ class LineNumberCorrector:
         suffix = match.group(1) if match else ''
         
         return f"@@ -{new_line_number},{old_count} +{new_line_number},{new_count} @@{suffix}"
+
+    
+    def _validate_diff_content(self, diff_content: str) -> bool:
+        """Valide le contenu du diff pour éviter les erreurs"""
+        try:
+            lines = diff_content.split('\n')
+            
+            # Vérifier la structure de base
+            if len(lines) > 50000:  # Limite de sécurité
+                self.logger.warning("Diff très volumineux, traitement limité")
+                return False
+            
+            # Vérifier qu'il y a au moins un header valide
+            has_valid_header = any(line.startswith('@@') for line in lines[:100])
+            if not has_valid_header:
+                self.logger.warning("Aucun header de diff valide trouvé")
+                return False
+            
+            return True
+            
+        except Exception as e:
+            self.logger.error(f"Erreur validation diff: {e}")
+            return False

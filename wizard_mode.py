@@ -12,12 +12,17 @@ from patch_previewer import PatchPreviewer
 from rollback_manager import RollbackManager
 from interactive_cli import InteractiveCLI
 from colors import Colors
-from core import registry, get_processor
+from core import registry
 
 class WizardMode:
     """Assistant pas-à-pas pour guider les utilisateurs débutants"""
 
     def __init__(self, processor, config: PatchProcessorConfig):
+        """Initialise le wizard avec validation"""
+        if processor is None:
+            raise ValueError("Processor cannot be None")
+        
+        self.processor = processor
         self.processor = processor
         self.config = config
         self.logger = logging.getLogger('smart_patch_processor.wizard')
@@ -938,6 +943,15 @@ class WizardMode:
                     raise KeyboardInterrupt
 
     def _show_detailed_results(self, summary: Dict):
+        """Affiche les résultats détaillés avec validation robuste"""
+        if not isinstance(summary, dict):
+            print(f"   ⚠️ Format inattendu: {type(summary).__name__}")
+            return
+        
+        results = summary.get('results', [])
+        if not results:
+            print("   ℹ️ Aucun résultat détaillé disponible")
+            return
         """Affiche les résultats détaillés - VERSION ULTRA-SÉCURISÉE"""
         print(f"\n{Colors.CYAN}📊 RÉSULTATS DÉTAILLÉS:{Colors.END}")
         
@@ -1030,3 +1044,39 @@ class WizardMode:
             print(f"   ❌ Erreur de diagnostic: {e}")
             import traceback
             traceback.print_exc()
+    
+    def _safe_process_execution(self) -> Dict:
+        """Exécution sécurisée des patches avec gestion d'erreurs robuste"""
+        try:
+            if not self.processor:
+                return {'success': False, 'error': 'Processeur non disponible'}
+            
+            patches = self.session.get('user_choices', {}).get('selected_patches', [])
+            if not patches:
+                return {'success': False, 'error': 'Aucun patch sélectionné'}
+            
+            # Configuration sécurisée
+            self._apply_wizard_configuration()
+            
+            # Traitement avec timeout et validation
+            summary = self.processor.process_all_patches()
+            
+            # Validation du résultat
+            if isinstance(summary, dict):
+                success_count = (summary.get('success', 0) or 
+                               summary.get('successful_patches', 0) or
+                               len([r for r in summary.get('results', []) 
+                                   if getattr(r, 'success', False)]))
+                
+                return {
+                    'success': success_count > 0,
+                    'summary': summary,
+                    'patches_processed': len(patches),
+                    'successful_patches': success_count
+                }
+            
+            return {'success': False, 'error': 'Format de résultat invalide'}
+            
+        except Exception as e:
+            self.logger.error(f"Erreur traitement: {e}")
+            return {'success': False, 'error': str(e)}

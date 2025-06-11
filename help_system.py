@@ -478,9 +478,9 @@ class SmartPatchHelp:
         """En-tête principal"""
         print(f"{Colors.CYAN}{Colors.BOLD}")
         print("╔══════════════════════════════════════════════════════════════════════════════╗")
-        print("║                    🚀 SMART PATCH PROCESSOR v2.0                            ║")
-        print("║                  Processeur Intelligent de Patches                          ║")
-        print("║                          📚 AIDE DÉTAILLÉE                                  ║")
+        print("║                    🚀 SMART PATCH PROCESSOR v2.0                             ║")
+        print("║                  Processeur Intelligent de Patches                           ║")
+        print("║                          📚 AIDE DÉTAILLÉE                                   ║")
         print("╚══════════════════════════════════════════════════════════════════════════════╝")
         print(f"{Colors.END}")
 
@@ -719,7 +719,7 @@ def enhance_argument_parser(parser):
 
     # CORRECTION : Utiliser un nom différent pour éviter le conflit
     # Au lieu de --help-topic, utiliser --topic-help
-    parser.add_argument('--topic-help', 
+    parser.add_argument('--topic-help',
                        choices=['guided', 'wizard', 'examples', 'config',
                                'troubleshooting', 'advanced', 'quick'],
                        help='Affiche l\'aide sur un sujet spécifique')

@@ -51,9 +51,9 @@ TEMP_FILES=(
 print_header() {
     echo -e "${CYAN}${BOLD}"
     echo "╔══════════════════════════════════════════════════════════════════╗"
-    echo "║              🚀 INSTALLATION SMART PATCH PROCESSOR              ║"
-    echo "║                           v2.0                                  ║"
-    echo "║                      🔧 Version Améliorée                       ║"
+    echo "║              🚀 INSTALLATION SMART PATCH PROCESSOR               ║"
+    echo "║                           v2.0                                   ║"
+    echo "║                      🔧 Version Améliorée                        ║"
     echo "╚══════════════════════════════════════════════════════════════════╝"
     echo -e "${NC}"
 
@@ -78,7 +78,7 @@ show_debug_info() {
     echo "   🔧 setuptools: $HAS_SETUPTOOLS"
     echo "   ⚙️ wheel: $HAS_WHEEL"
     echo "   💾 Taille du projet: $(du -sh "$SCRIPT_DIR" 2>/dev/null | cut -f1 || echo "?")"
-    
+
     if [[ -d "$DIST_DIR" ]]; then
         echo "   📦 Distribution existante: $(ls -la "$DIST_DIR" 2>/dev/null | wc -l) fichier(s)"
     fi

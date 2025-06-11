@@ -58,6 +58,10 @@ class PatchProcessorConfig:
         return default_config
     
     def _load_config_file(self, config_path: Path) -> Optional[Dict]:
+        """Version sécurisée"""
+        return self._load_config_file_secure(config_path)
+    
+    def _load_config_file_secure(self, config_path: Path) -> Optional[Dict]:
         """Charge un fichier de configuration (YAML ou JSON)"""
         try:
             with open(config_path, 'r', encoding='utf-8') as f:
@@ -70,13 +74,13 @@ class PatchProcessorConfig:
                     if yaml is None:
                         print(f"⚠️ PyYAML non disponible, tentative JSON pour {config_path}")
                         return json.loads(content)
-                    return yaml.safe_load(content)
+                    return self._load_yaml_secure(content)
                 elif config_path.suffix.lower() == '.json':
                     return json.loads(content)
                 else:
                     # Essayer YAML d'abord, puis JSON
                     try:
-                        return yaml.safe_load(content)
+                        return self._load_yaml_secure(content)
                     except yaml.YAMLError:
                         return json.loads(content)
         except Exception:
@@ -314,3 +318,90 @@ class PatchProcessorConfig:
                 warnings.append("Scan de sécurité activé mais aucun pattern configuré")
         
         return warnings
+    def _load_yaml_secure(self, content: str) -> Optional[Dict]:
+        """Chargement YAML sécurisé"""
+        try:
+            if not yaml:
+                return None
+            
+            # Vérifier la taille pour éviter DoS
+            if len(content.encode('utf-8')) > 10 * 1024 * 1024:  # 10MB max
+                raise ValueError("Config file too large")
+            
+            # Utiliser safe_load pour éviter l'exécution de code
+            config = yaml.safe_load(content)
+            
+            # Validation du format
+            if not isinstance(config, dict):
+                raise ValueError("Config must be a dictionary")
+            
+            # Vérifier contre les clés dangereuses
+            dangerous_keys = ['__import__', 'eval', 'exec', '__builtins__']
+            self._check_dangerous_keys(config, dangerous_keys)
+            
+            return config
+            
+        except Exception as e:
+            print(f"⚠️ Erreur chargement YAML sécurisé: {e}")
+            return None
+    
+    def _check_dangerous_keys(self, obj: Any, dangerous_keys: List[str], path: str = "") -> None:
+        """Vérifie récursivement les clés dangereuses"""
+        if isinstance(obj, dict):
+            for key, value in obj.items():
+                if str(key) in dangerous_keys:
+                    raise ValueError(f"Dangerous key detected: {path}.{key}")
+                self._check_dangerous_keys(value, dangerous_keys, f"{path}.{key}")
+        elif isinstance(obj, list):
+            for i, item in enumerate(obj):
+                self._check_dangerous_keys(item, dangerous_keys, f"{path}[{i}]")
+        elif isinstance(obj, str):
+            for dangerous in dangerous_keys:
+                if dangerous in obj:
+                    raise ValueError(f"Dangerous content in {path}: {dangerous}")
+    
+    def _merge_configs_secure(self, default: Dict, user: Dict, max_depth: int = 10) -> Dict:
+        """Fusion sécurisée des configurations avec limite de profondeur"""
+        if max_depth <= 0:
+            return default  # Éviter récursion infinie
+        
+        if not isinstance(default, dict) or not isinstance(user, dict):
+            return default
+        
+        result = default.copy()
+        
+        for key, value in user.items():
+            # Validation de la clé
+            if not isinstance(key, (str, int, float)):
+                continue  # Ignorer les clés non standards
+            
+            if str(key).startswith('_'):
+                continue  # Ignorer les clés privées
+            
+            if key in result and isinstance(value, dict) and isinstance(result[key], dict):
+                result[key] = self._merge_configs_secure(result[key], value, max_depth - 1)
+            else:
+                # Validation de la valeur
+                if self._is_safe_config_value(value):
+                    result[key] = value
+        
+        return result
+    
+    def _is_safe_config_value(self, value: Any) -> bool:
+        """Vérifie si une valeur de config est sûre"""
+        # Types autorisés
+        safe_types = (str, int, float, bool, list, dict, type(None))
+        if not isinstance(value, safe_types):
+            return False
+        
+        # Vérification récursive pour listes et dicts
+        if isinstance(value, list):
+            return all(self._is_safe_config_value(item) for item in value)
+        elif isinstance(value, dict):
+            return all(self._is_safe_config_value(v) for v in value.values())
+        elif isinstance(value, str):
+            # Vérifier contre patterns dangereux
+            dangerous_patterns = ['__import__', 'eval(', 'exec(', 'subprocess', 'os.system']
+            return not any(pattern in value for pattern in dangerous_patterns)
+        
+        return True
