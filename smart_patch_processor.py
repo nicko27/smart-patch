@@ -9,6 +9,7 @@ from pathlib import Path
 from datetime import datetime
 from datetime import datetime, timedelta
 import stat
+import re
 
 from processing_result import ProcessingResult
 from permission_config import PermissionConfig
@@ -65,6 +66,109 @@ class SmartPatchProcessor:
             'total_issues_fixed': 0,
             'processing_time': 0
         }
+
+    def detect_patch_targets_improved(self, patch_content: str, patch_path: Path) -> list:
+        """NOUVEAU: Détecte TOUS les fichiers cibles dans un patch (même multi-fichiers)"""
+        targets = []
+
+        # Analyser le patch pour identifier tous les fichiers
+        lines = patch_content.split('\n')
+        current_files = set()
+
+        for line in lines:
+            line = line.strip()
+
+            # Détecter les en-têtes de fichiers
+            filename = None
+            if line.startswith('--- ') and not line.endswith('/dev/null'):
+                filename = self._extract_clean_filename(line[4:])
+            elif line.startswith('+++ ') and not line.endswith('/dev/null'):
+                filename = self._extract_clean_filename(line[4:])
+            elif line.startswith('*** '):
+                filename = self._extract_clean_filename(line[4:])
+            elif line.startswith('Index: '):
+                filename = self._extract_clean_filename(line[7:])
+
+            if filename and filename not in current_files:
+                # Résoudre le nom de fichier vers un chemin réel
+                resolved_path = self._resolve_target_path(filename, patch_path)
+                if resolved_path:
+                    targets.append(resolved_path)
+                    current_files.add(filename)
+                    self.logger.debug(f"Fichier cible détecté: {filename} -> {resolved_path}")
+
+        # Fallback vers la détection classique si rien trouvé
+        if not targets:
+            classic_target = self.detector.detect_target_file(patch_path, patch_content)
+            if classic_target:
+                targets.append(classic_target)
+
+        return targets
+
+    def _extract_clean_filename(self, raw_filename: str) -> str:
+        """NOUVEAU: Extrait et nettoie un nom de fichier des métadonnées"""
+        if not raw_filename:
+            return None
+
+        # Supprimer les timestamps et métadonnées
+        filename = raw_filename.strip()
+        filename = re.sub(r'\s+\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}.*$', '', filename)
+        filename = re.sub(r'\s+[A-Z][a-z]{2}\s+[A-Z][a-z]{2}\s+\d+.*$', '', filename)
+        filename = filename.split('\t')[0].strip()
+
+        # Extraire juste le nom de fichier (pas le chemin complet)
+        filename = filename.split('/')[-1] if '/' in filename else filename
+
+        # Valider que c'est un nom de fichier valide
+        if (filename and
+            len(filename) > 2 and
+            '.' in filename and
+            not filename.startswith('.') and
+            filename not in ['a', 'b', 'old', 'new', 'error']):
+            return filename
+
+        return None
+
+    def _resolve_target_path(self, filename: str, patch_path: Path) -> Path:
+        """NOUVEAU: Résout un nom de fichier vers un chemin réel"""
+        if not filename:
+            return None
+
+        # Rechercher dans plusieurs répertoires
+        search_dirs = [
+            Path.cwd(),                           # Répertoire courant
+            patch_path.parent,                    # Répertoire du patch
+            self.source_dir if self.source_dir.is_dir() else self.source_dir.parent,
+        ]
+
+        # Ajouter des sous-répertoires courants si ils existent
+        for base in [Path.cwd(), patch_path.parent]:
+            for subdir in ['src', 'ui', 'lib', 'app', 'core']:
+                subdir_path = base / subdir
+                if subdir_path.exists():
+                    search_dirs.append(subdir_path)
+
+        # Rechercher le fichier
+        for search_dir in search_dirs:
+            if not search_dir.exists():
+                continue
+
+            # Recherche exacte
+            target_path = search_dir / filename
+            if target_path.exists() and target_path.is_file():
+                return target_path
+
+            # Recherche récursive limitée
+            for depth in range(1, 4):
+                pattern = "*/" * depth + filename
+                try:
+                    for found_path in search_dir.glob(pattern):
+                        if found_path.is_file():
+                            return found_path
+                except Exception:
+                    continue
+
+        return None
 
         # Composants optionnels
         try:
@@ -191,19 +295,25 @@ class SmartPatchProcessor:
             with open(patch_path, 'r', encoding='utf-8') as f:
                 patch_content = f.read()
 
-            # Détecter ou utiliser le fichier cible spécifié
+            # CORRECTION: Détection améliorée des fichiers cibles
             if explicit_target and explicit_target.exists():
-                target_file = explicit_target
-                self.logger.debug(f"Utilisation du fichier cible spécifié: {target_file}")
+                target_files = [explicit_target]
+                self.logger.debug(f"Utilisation du fichier cible spécifié: {explicit_target}")
             elif hasattr(self, "target_file") and self.target_file and self.target_file.exists():
-                target_file = self.target_file
-                self.logger.debug(f"Utilisation du fichier cible de l\'instance: {target_file}")
+                target_files = [self.target_file]
+                self.logger.debug(f"Utilisation du fichier cible de l\'instance: {self.target_file}")
             else:
-                target_file = self.detector.detect_target_file(patch_path, patch_content)
-                if not target_file:
-                    result.errors.append("Fichier cible non détecté et aucun fichier explicite fourni")
+                # NOUVEAU: Détecter tous les fichiers cibles possibles
+                target_files = self.detect_patch_targets_improved(patch_content, patch_path)
+
+                if not target_files:
+                    result.errors.append("Aucun fichier cible détecté - le patch ne semble pas contenir de fichiers Python valides")
                     return result
-                self.logger.debug(f"Fichier cible détecté automatiquement: {target_file}")
+
+                self.logger.debug(f"Fichiers cibles détectés: {[str(f) for f in target_files]}")
+
+            # Traiter le premier fichier cible valide trouvé
+            target_file = target_files[0]
 
             result.target_file = str(target_file)
 
